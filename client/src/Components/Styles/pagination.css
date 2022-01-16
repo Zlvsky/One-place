@@ -1,0 +1,29 @@
+.pagination {
+  display: flex;
+  padding-left: 0;
+  list-style: none;
+  border-radius: 0.25rem;
+  margin-bottom: 16px;
+  text-align: center;
+  align-items: center;
+}
+
+.pagination-item {
+  position: relative;
+  display: block;
+  padding: 2px 10px;
+  margin-left: -1px;
+  line-height: 1.25;
+  color: #979CA1;
+  cursor: pointer;
+  border-radius: 8px;
+}
+.pagination-item:hover {
+    z-index: 2;
+    color: #151E29;
+    text-decoration: none;
+}
+.pagination-item-icon {
+  background-color: #F4F4F4;
+
+}

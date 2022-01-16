@@ -1,0 +1,35 @@
+.bodyWrap {
+  position: fixed;
+}
+.bodyPopupWrap {
+  background: rgba(46 ,46 ,46 , 0.2);
+}
+.popup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-inner {
+  position: relative;
+  padding: 32px;
+  width: 100%;
+  height: 90%;
+  max-height: 900px;
+  max-width: 800px;
+  background-color: #fff;
+  border-radius: 15px;
+
+}
+
+.popup-inner .close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+	color: #EF5F63;
+	border: none;
+	padding: 0;
+	cursor: pointer;
+	outline: inherit;
+}

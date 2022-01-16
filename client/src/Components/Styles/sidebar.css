@@ -1,0 +1,97 @@
+.navbar {
+  width: calc(100% - 250px);
+  left: 250px;
+  background-color: #fff;
+  height: 80px;
+  position: fixed;
+}
+.navbarWrap {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+}
+.navbarRow {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.userNavbar {
+  display: flex;
+  align-items: center;
+}
+.userLogged {
+  font-size: 17px;
+  font-weight: bold;
+  margin-left: 10px;
+  margin-right: 60px;
+}
+
+.Sidebar {
+  height: 100%;
+  width: 250px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  background-color: #fff;
+
+}
+
+.SidebarLogoWrap {
+  width: 80%;
+  height: 150px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.SidebarLogo {
+  width: 100%;
+  height: 70px;
+}
+
+.SidebarList {
+  height: auto;
+  width: 100%;
+  padding: 0;
+}
+
+.SidebarRow {
+  transition: background-color ease-in-out .2s, color ease-in-out .2s, border-color ease-in-out .2s;
+  width: 80%;
+  height: 50px;
+  list-style-type: none;
+  display: flex;
+  flex-direction: row;
+  color: #8B8F9A;
+  border-radius: 13px;
+  justify-content: center;
+  align-items: center;
+  font-family: "Circular";
+  margin: 20px auto;
+  border-left: 5px solid transparent;
+}
+
+.SidebarRow:hover, .sidebar-active-link .SidebarRow {
+  color: #EF5F63;
+  background-color: #FFEBEC;
+  border-left: 5px solid #EF5F63;
+}
+
+.RowIcon {
+  flex: 5%;
+  display: grid;
+  place-items: end;
+
+}
+
+.RowTitle {
+  margin-left: 10px;
+  flex: 50%;
+  font-size: 17px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}

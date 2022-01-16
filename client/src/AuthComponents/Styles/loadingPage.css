@@ -1,0 +1,32 @@
+.loading-page-wrapper {
+  display: table;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 1000;
+}
+
+.loading-page {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+}
+.spinner {
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  background-color: white;
+  border: 8px solid #EF5F63;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: rotate-spinner  .5s  infinite linear;
+}
+
+@keyframes rotate-spinner {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

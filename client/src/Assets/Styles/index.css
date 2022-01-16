@@ -1,0 +1,58 @@
+@font-face {
+  font-family: 'Circular';
+  src: url(./../Fonts/CircularStd-Medium.woff2) format("woff2");
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'Circular';
+  src: url(./../Fonts/CircularStd-Bold.woff2) format("woff2");
+  font-weight: bold;
+}
+@font-face {
+  font-family: 'Circular';
+  src: url(./../Fonts/CircularStd-Book.woff2) format("woff2");
+  font-weight: 400;
+}
+@font-face {
+  font-family: 'Varela';
+  src: url(./../Fonts/VarelaRound-Regular.ttf) format("opentype");
+  font-weight: normal;
+}
+* {
+  box-sizing: border-box;
+    font-family: "Varela";
+}
+
+body, #root {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  width: 100vw;
+  height: 100vh;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.bodyWrap {
+  width: calc(100% - 290px);
+  height: calc(100% - 100px);
+  left: 250px;
+  top: 80px;
+  background-color: #F2F4FA;
+  border-radius: 50px;
+}
+
+.maincolor {
+  color: #EF5F63;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.disabledEvent {
+  pointer-events: none;
+}
