@@ -102,9 +102,9 @@
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
-[home-screenshot]: images/home.png
-[login-screenshot]: images/login.png
-[orders-screenshot]: images/orders.png
-[createorder-screenshot]: images/createorder.png
-[events-screenshot]: images/events.png
-[users-screenshot]: images/users.png
+[home-screenshot]: readmeimages/home.png
+[login-screenshot]: readmeimages/login.png
+[orders-screenshot]: readmeimages/orders.png
+[createorder-screenshot]: readmeimages/createorder.png
+[events-screenshot]: readmeimages/events.png
+[users-screenshot]: readmeimages/users.png
