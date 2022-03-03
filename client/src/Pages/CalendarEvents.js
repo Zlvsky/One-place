@@ -1,15 +1,15 @@
-import React, { useEffect, useState, useContext } from 'react';
-import './Styles/calendar.css';
-import axios from 'axios';
-import DatePicker from 'react-date-picker';
-import Popup from '../Components/Popup';
-import { AuthLoginInfo }  from './../AuthComponents/AuthLogin';
-import InsertInvitationRoundedIcon from '@mui/icons-material/InsertInvitationRounded';
-import TitleRoundedIcon from '@mui/icons-material/TitleRounded';
-import AccessTimeRoundedIcon from '@mui/icons-material/AccessTimeRounded';
-import HelpOutlineRoundedIcon from '@mui/icons-material/HelpOutlineRounded';
-import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
-import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded';
+import React, { useEffect, useState, useContext } from "react";
+import "./Styles/calendar.css";
+import axios from "axios";
+import DatePicker from "react-date-picker";
+import Popup from "../Components/Popup";
+import { AuthLoginInfo } from "./../AuthComponents/AuthLogin";
+import InsertInvitationRoundedIcon from "@mui/icons-material/InsertInvitationRounded";
+import TitleRoundedIcon from "@mui/icons-material/TitleRounded";
+import AccessTimeRoundedIcon from "@mui/icons-material/AccessTimeRounded";
+import HelpOutlineRoundedIcon from "@mui/icons-material/HelpOutlineRounded";
+import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
+import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 
 function checkIfNextDay(nextDay) {
   var tommorow = new Date();
@@ -26,8 +26,8 @@ function checkIfNextDay(nextDay) {
 function checkIfNextDayIso(nextDay) {
   const tommorow = new Date();
   tommorow.setDate(tommorow.getDate() + 1);
-  const tommorowDate = tommorow.toISOString().split('T')[0];
-  if(nextDay === tommorowDate) {
+  const tommorowDate = tommorow.toISOString().split("T")[0];
+  if (nextDay === tommorowDate) {
     return true;
   } else {
     return false;
@@ -44,17 +44,33 @@ function formatDate(date, checkNextDay = false) {
   var convertedDate = [year, month, day].join("-");
   if (checkNextDay == true) {
     if (checkIfNextDay(convertedDate)) {
-      return <span style={{ color: "green" }}>Jutro</span>;
+      return (
+        <span
+          style={{
+            color: "green",
+          }}
+        >
+          Tommorow
+        </span>
+      );
     }
   }
   return convertedDate;
 }
 
 function formatIsoDate(date, checkNextDay = false) {
-  const convertedDate = date.split('T')[0];
+  const convertedDate = date.split("T")[0];
   if (checkNextDay == true) {
     if (checkIfNextDayIso(convertedDate)) {
-      return <span style={{ color: "green" }}>Jutro</span>;
+      return (
+        <span
+          style={{
+            color: "green",
+          }}
+        >
+          Tommorow
+        </span>
+      );
     }
   }
   return convertedDate;
@@ -63,41 +79,47 @@ function formatIsoDate(date, checkNextDay = false) {
 function CalendarEvents() {
   const [eventsData, setEventsData] = useState();
   const [newEventSubmitted, setNewEventSubmitted] = useState(false);
-  const ctx = useContext(AuthLoginInfo)
+  const ctx = useContext(AuthLoginInfo);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/events", {
-      withCredentials: true
-    }).then(res => {
-      if (res.data != null) {
-        setNewEventSubmitted(false)
-        setEventsData(res.data)
-      }
-    });
+    axios
+      .get("http://localhost:5000/events", { withCredentials: true })
+      .then((res) => {
+        if (res.data != null) {
+          setNewEventSubmitted(false);
+          setEventsData(res.data);
+        }
+      });
   }, [newEventSubmitted]);
 
   const addNewEvent = (eventData) => {
-    axios.post("http://localhost:5000/newevent", {
-      eventData
-    }, {
-      withCredentials: true
-    }).then(res => {
-      if(res.data === "success") {
-        setNewEventSubmitted(true);
-      }
-    })
-  }
+    axios
+      .post(
+        "http://localhost:5000/newevent",
+        {
+          eventData,
+        },
+        { withCredentials: true }
+      )
+      .then((res) => {
+        if (res.data === "success") {
+          setNewEventSubmitted(true);
+        }
+      });
+  };
 
   const CalendarWrap = (props) => {
     return (
       <div className="calendarWrap">
         <div className="calendarHeader">
-          <h1>Terminarz</h1>
+          <h1>Event calendar</h1>
         </div>
-        { props.children }
+        <div className="calendarColumns">
+          {props.children}
+        </div>
       </div>
-    )
-  }
+    );
+  };
 
   const NewEvent = () => {
     const [buttonPopup, setButtonPopup] = useState(false);
@@ -108,52 +130,93 @@ function CalendarEvents() {
       addDate: formatDate(new Date()),
       hours: "",
       details: "",
-      worker: ctx.username
-    })
+      worker: ctx.username,
+    });
 
     return (
       <div className="newEventWrap">
-        <h3>Dodaj nowe wydarzenie</h3>
-
-      <div className="newEventGroup">
-        <div className="newEventDate">
-          <button className="newEventDateButton"> <TitleRoundedIcon /> </button>
-            <div className="newEventDateContainer">
-              <label className="newEventDateLabel">Tytuł</label>
-              <input type="text" aria-label="Wybierz date" className="newEventDateInput" value={newEventData.title} onChange={e => {setNewEventData({...newEventData, title: e.target.value}) }}/>
-            </div>
-        </div>
-
-        <div className="newEventDate">
-            <button className="newEventDateButton">
-                <InsertInvitationRoundedIcon />
-            </button>
-            <div className="newEventDateContainer">
-              <label className="newEventDateLabel">Wybierz date</label>
-              <DatePicker
-                onChange={(date) => {setNewEventData({...newEventData, deadlineDate: formatDate(date), calendarPickDate: date })}}
-                value={newEventData.calendarPickDate}
-                className="newEventDateInput kalendarz"
+        <h3>Add new event</h3>
+        <div className="newEventRowWrap">
+          <div className="newEventGroup">
+            <div className="newEventDate">
+              <button className="newEventDateButton">
+                <TitleRoundedIcon />
+              </button>
+              <div className="newEventDateContainer">
+                <label className="newEventDateLabel">Title</label>
+                <input
+                  type="text"
+                  className="newEventDateInput"
+                  value={newEventData.title}
+                  onChange={(e) => {
+                    setNewEventData({
+                      ...newEventData,
+                      title: e.target.value,
+                    });
+                  }}
                 />
+              </div>
             </div>
-          </div>
-        </div>
 
-        <div className="newEventGroup">
-          <div className="newEventDate">
-            <button className="newEventDateButton"> <HelpOutlineRoundedIcon /> </button>
+            <div className="newEventDate">
+              <button className="newEventDateButton">
+                <InsertInvitationRoundedIcon />
+              </button>
               <div className="newEventDateContainer">
-                <label className="newEventDateLabel">Szczegóły</label>
-                <input type="text" aria-label="Wybierz date" className="newEventDateInput" value={newEventData.details} onChange={e => {setNewEventData({...newEventData, details: e.target.value}) }}/>
+                <label className="newEventDateLabel">Pick date</label>
+                <DatePicker
+                  onChange={(date) => {
+                    setNewEventData({
+                      ...newEventData,
+                      deadlineDate: formatDate(date),
+                      calendarPickDate: date,
+                    });
+                  }}
+                  value={newEventData.calendarPickDate}
+                  className="newEventDateInput calendar"
+                />
               </div>
-          </div>
+            </div>
 
-          <div className="newEventDate">
-            <button className="newEventDateButton"> <AccessTimeRoundedIcon /> </button>
+            <div className="newEventDate">
+              <button className="newEventDateButton">
+                <HelpOutlineRoundedIcon />
+              </button>
               <div className="newEventDateContainer">
-                <label className="newEventDateLabel">Zakres godzin</label>
-                <input type="text" aria-label="Wybierz date" className="newEventDateInput" value={newEventData.hours} onChange={e => {setNewEventData({...newEventData, hours: e.target.value}) }}/>
+                <label className="newEventDateLabel">Details</label>
+                <input
+                  type="text"
+                  className="newEventDateInput"
+                  value={newEventData.details}
+                  onChange={(e) => {
+                    setNewEventData({
+                      ...newEventData,
+                      details: e.target.value,
+                    });
+                  }}
+                />
               </div>
+            </div>
+
+            <div className="newEventDate">
+              <button className="newEventDateButton">
+                <AccessTimeRoundedIcon />
+              </button>
+              <div className="newEventDateContainer">
+                <label className="newEventDateLabel">Specify hours</label>
+                <input
+                  type="text"
+                  className="newEventDateInput"
+                  value={newEventData.hours}
+                  onChange={(e) => {
+                    setNewEventData({
+                      ...newEventData,
+                      hours: e.target.value,
+                    });
+                  }}
+                />
+              </div>
+            </div>
           </div>
         </div>
 
@@ -169,71 +232,99 @@ function CalendarEvents() {
                 addDate: formatDate(new Date()),
                 hours: "",
                 details: "",
-                worker: ctx.username
-              })
+                worker: ctx.username,
+              });
             }}
-            >
-          <AddCircleOutlineRoundedIcon />
-          <span className="addOrderText">Dodaj</span>
+          >
+            <AddCircleOutlineRoundedIcon />
+            <span className="addOrderText">Create</span>
           </button>
         </div>
       </div>
-    )
-  }
+    );
+  };
 
   const EventsTable = () => {
-    const sortedEventsData = eventsData?.sort((a,b) => {
+    const [filterOrders, setFilterOrders] = useState("Current");
+
+    const sortedEventsData = eventsData?.sort((a, b) => {
       return new Date(b.deadlineDate) - new Date(a.deadlineDate);
-    })
+    });
     const upToDateEventsData = [];
     const oldDateEventsData = [];
 
     sortedEventsData?.forEach((value) => {
       const dateToCompare = new Date();
-      dateToCompare.setHours(0,0,0,0);
+      dateToCompare.setHours(0, 0, 0, 0);
       const actualDate = new Date(value.deadlineDate);
-      if(actualDate >= dateToCompare) {
+      if (actualDate >= dateToCompare) {
         upToDateEventsData.push(value);
       } else {
         oldDateEventsData.push(value);
       }
-    })
-
+    });
 
     return (
       <div className="eventsTableWrap">
-      <table className="eventsTable">
-        <thead>
-        <tr className="eventsTableTdTh">
-          <th></th>
-          <th>Tytuł</th>
-          <th>Szczegóły</th>
-          <th>Termin</th>
-          <th>Data dodania</th>
-          <th>Dodane przez</th>
-        </tr>
-        </thead>
-        <tbody>
-        {upToDateEventsData?.map(el => {
-            return (
-              <tr className="eventsTableTdTr" key={el.id}>
-                <td className="eventsTableIcon"> <CheckCircleOutlineRoundedIcon /> </td>
-                <td>{el.title}</td>
-                <td>{el.details}</td>
-                <td>
-                  {formatIsoDate(el.deadlineDate, true)}
-                  <span className="eventsTableHours">{el.hours}</span>
-                </td>
-                <td>{formatIsoDate(el.addDate)}</td>
-                <td>{el.worker}</td>
-              </tr>
+        <div className="orderNav calendarNav">
+          <ul>
+            <li
+              className={`${filterOrders === "Current" ? "active" : ""}`}
+              onClick={() => {
+                setFilterOrders("Current");
+              }}
+            >
+              Current events
+            </li>
+            <li
+              className={`${filterOrders === "Expired" ? "active" : ""}`}
+              onClick={() => {
+                setFilterOrders("Expired");
+              }}
+            >
+              Expired events
+            </li>
+          </ul>
+        </div>
+        <table className="eventsTable">
+          <thead>
+            <tr className="eventsTableTdTh">
+              <th></th>
+              <th>Title</th>
+              <th>Details</th>
+              <th>Term</th>
+              <th>Date created</th>
+              <th>Added by</th>
+            </tr>
+          </thead>
+          <tbody>
+            {(filterOrders === "Expired"
+              ? oldDateEventsData
+              : upToDateEventsData
             )
-          }).reverse()}
-        </tbody>
-      </table>
+              ?.map((el) => {
+                return (
+                  <tr className="eventsTableTdTr" key={el.id}>
+                    <td className="eventsTableIcon">
+                      <CheckCircleOutlineRoundedIcon />
+                    </td>
+                    <td>{el.title}</td>
+                    <td>{el.details}</td>
+                    <td>
+                      {formatIsoDate(el.deadlineDate, true)}
+                      <span className="eventsTableHours">{el.hours}</span>
+                    </td>
+                    <td>{formatIsoDate(el.addDate)}</td>
+                    <td>{el.worker}</td>
+                  </tr>
+                );
+              })
+              .reverse()}
+          </tbody>
+        </table>
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <div className="bodyWrap">
@@ -241,9 +332,8 @@ function CalendarEvents() {
         <NewEvent />
         <EventsTable />
       </CalendarWrap>
-
     </div>
-  )
+  );
 }
 
 export default CalendarEvents;

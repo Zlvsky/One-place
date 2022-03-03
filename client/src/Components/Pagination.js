@@ -34,7 +34,7 @@ function Pagination ({
 
         if (pages.length <= 5) {
             return pages;
-        }else {
+        } else {
             let neighbourPages;
             let lastPage = pages.slice(-1);
 
@@ -54,6 +54,7 @@ function Pagination ({
             } else if (currentPage === pages.length) {
               let firstPage = pages[0];
               let firstPages = pages.slice(-3)
+
               return (<>
                 {firstPage}
                 <li

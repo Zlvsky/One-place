@@ -4,6 +4,7 @@ import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
 import ContentPasteRoundedIcon from '@mui/icons-material/ContentPasteRounded';
 import PeopleOutlineRoundedIcon from '@mui/icons-material/PeopleOutlineRounded';
 import TodayRoundedIcon from '@mui/icons-material/TodayRounded';
+import AdminPanelSettingsRoundedIcon from '@mui/icons-material/AdminPanelSettingsRounded';
 export const SidebarData = [
   {
     title: "Dashboard",
@@ -11,23 +12,24 @@ export const SidebarData = [
     link: "/"
   },
   {
-    title: "Login",
-    icon: <LoginRoundedIcon />,
-    link: "/login"
-  },
-  {
-    title: "Zamówienia",
+    title: "Orders",
     icon: <ContentPasteRoundedIcon />,
-    link: "/zamowienia"
+    link: "/orders"
   },
   {
-    title: "Klienci",
+    title: "Clients",
     icon: <PeopleOutlineRoundedIcon />,
-    link: "/klienci"
+    link: "/clients"
   },
   {
-    title: "Kalendarz",
+    title: "Calendar",
     icon: <TodayRoundedIcon />,
-    link: "/kalendarz"
+    link: "/calendar"
+  },
+  {
+    title: "Admin pannel",
+    icon: <AdminPanelSettingsRoundedIcon />,
+    link: "/adminPannel",
+    role: "admin"
   }
 ];

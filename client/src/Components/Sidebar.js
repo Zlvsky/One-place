@@ -20,36 +20,42 @@ const logout = () => {
 
 function Sidebar() {
   const ctx = useContext(AuthLoginInfo);
-  return (
-    <div className="SidebarWrapper">
-      <div className="navbar">
-        <div className="navbarWrap">
-          <div className="navbarRow">
-          </div>
-          <div className="navbarRow">
-            { ctx &&
-            <div className="userNavbar ">
+
+  const NavbarSection = () => {
+    return (
+    <div className="navbar">
+      <div className="navbarWrap">
+        <div className="navbarRow">
+        </div>
+        <div className="navbarRow">
+
+          { //if user is logged in
+            ctx &&
+          <div className="userNavbar ">
+            <div className="userLogo">
+            <AccountCircleRoundedIcon />
+            </div>
+            <div className="userLogged">
+            Logged as: {ctx.username}
+            </div>
+            <div className="navbarFlex" onClick={() => {logout()}}>
               <div className="userLogo">
-              <AccountCircleRoundedIcon />
+                <LogoutRoundedIcon className="maincolor clickable"/>
               </div>
-              <div className="userLogged">
-              {ctx.username}
-              </div>
-              <div onClick={() => {logout()}}>
-                <div className="userLogo">
-                  <LogoutRoundedIcon />
-                </div>
-                <div className="logout">
-                  Wyloguj
-                </div>
+              <div className="logout clickable">
+                Logout
               </div>
             </div>
-            }
           </div>
+          }
         </div>
       </div>
-      
+    </div>
+  )
+}
 
+  const SidebarSection = () => {
+    return (
     <div className="Sidebar">
       <div className="SidebarLogoWrap">
         <div className="SidebarLogo">
@@ -59,6 +65,10 @@ function Sidebar() {
 
       <ul className="SidebarList">
       {SidebarData.map((val, key) => {
+        let hideElement = false;
+        if (val?.role != undefined && val?.role != ctx?.role) {
+          return null;
+        }
         return (
          <NavLink to={val.link} key={key} className={({ isActive }) => isActive ? "sidebar-active-link" : "sidebar-link"}>
          <li
@@ -71,7 +81,14 @@ function Sidebar() {
       })}
       </ul>
     </div>
-  </div>
+  )
+}
+
+  return (
+    <div className="SidebarWrapper">
+      <NavbarSection />
+      <SidebarSection />
+    </div>
   )
 }
 

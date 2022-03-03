@@ -4,8 +4,8 @@
 
 .topPanelWrap {
   display: flex;
-  flex-direction: row;
-  width: 100%;
+  flex-direction: column;
+  width: 95%;
   margin-bottom: 30px;
 }
 
@@ -18,27 +18,31 @@
 }
 
 .topPanelDataBox {
-  padding: 0 20px;
+  padding: 30px 20px;
   margin: 0 15px;
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  flex-direction: column;
+  align-items: left;
   justify-content: center;
   background-color: rgba(135, 131, 215, 0.2);
   border-radius: 15px;
   height: 100%;
+  width: 25%;
 }
+
 .topPanelDataBox:first-child {
   background-color: rgba(135, 131, 215, 0.2);
 }
+
 .topPanelDataBox:nth-child(2) {
-  background-color: rgba(239,95,99, 0.2)
-}
-.topPanelDataBox:last-child {
-  background-color: rgba(135, 131, 215, 0.2);
+  background-color: rgba(239, 95, 99, 0.2)
 }
 
-.topPanelDataIcon svg{
+.topPanelDataBox:last-child {
+  background-color: rgba(239, 95, 99, 0.2);
+}
+
+.topPanelDataIcon svg {
   font-size: 35px;
   margin-right: 15px;
   color: #EF5F63;
@@ -48,11 +52,24 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 6px 20px;
-  margin: 0 15px;
-  border: 2px solid #E2E0E3;
-  border-radius: 15px;
+  margin: 10px 15px;
   height: 100%;
+  width: 50%;
+}
+.topPanelDataRangeBox .topPanelDataIcon {
+  margin: 0 0 0 20px;
+}
+.topPanelSeperator {
+  background-color: #ACADB0;
+  width: 100%;
+  height: 1px;
+}
+.topPanelBottomText {
+  margin-top: 10px;
+  display: block;
+}
+.topPanelDataText {
+  font-size: 1.7em;
 }
 .dataRangeSelect {
   appearance: none;
@@ -69,10 +86,12 @@
   border-radius: 10px;
   cursor: pointer;
 }
+
 .dataRangeSelect option {
-    color: inherit;
-    background-color: rgba(135, 131, 215, 0.2);
-  }
+  color: inherit;
+  background-color: rgba(135, 131, 215, 0.2);
+}
+
 .dataRangeSelect::after {
   content: '\25BC';
   position: absolute;
@@ -82,4 +101,22 @@
   background-color: #34495e;
   transition: .25s all ease;
   pointer-events: none;
+}
+
+/*  */
+.topPanelHeaderInline {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.upcomingEventWrap {
+  margin: 10px 0;
+  height: 60%;
+}
+.upcomingEventDate {
+  border-left: 2px solid #EF5F63;
+}
+.upcomingEventTitle {
+
 }

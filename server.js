@@ -1,6 +1,4 @@
-if(process.env.NODE_ENV !== "production") {
-  require("dotenv").config();
-}
+require("dotenv").config();
 
 var mysql = require('mysql');
 var express = require('express');
@@ -13,26 +11,44 @@ var bcrypt = require('bcrypt');
 const passport = require("passport");
 const cors = require("cors");
 
+const {
+  getAllDataFromTarget,
+  getOrdersById,
+  getClientById,
+  getOrdersByClientId,
+  getProductsBySingleOrderId,
+  getProductsByMultipleOrderId,
+  deleteProductsById,
+  addMultipleProducts,
+  updateOrderById,
+  updateClientById,
+  getAllClientsWithOrdersCount,
+  addNewClient,
+  getDasboardData,
+  addNewEvent,
+  deleteUserById,
+  getUsersForAdminPanel,
+  createNewUser
+} = require("./queries.js");
+
 var connection = mysql.createPool({
-  host  :   'localhost',
-  user  :   'root',
-  password: '',
-  database: 'nodelogin',
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DATABASE,
   multipleStatements: true,
   timezone: 'utc'
 });
 
+// CONFIGURING OPTIONS
 const corsOptions = {
   origin: "http://localhost:3000",
   credentials: true,
   optionSuccessStatus: 200
 };
 
-
-
 const initializePassport = require('./passport-config');
 initializePassport(connection, passport);
-
 
 app.use(cors(corsOptions));
 app.use(flash());
@@ -43,221 +59,169 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 app.use(bodyParser.json());
+// END OF CONFIGURING OPTIONS
 
-
-app.post('/login', passport.authenticate('local'), (req,res) => {
+app.post('/login', passport.authenticate('local'), (req, res) => {
   res.send("success")
 });
 
-app.get('/logout', (req,res) => {
+app.get('/logout', (req, res) => {
   req.logout();
   res.send("success");
 });
 
-app.get('/user', (req,res) => {
+app.get('/user', (req, res) => {
   res.send(req.user)
 });
 
-app.get('/orders', (req,res) => {
-  connection.query(`SELECT * from zamowienia`, async function(error, results) {
-    if(results.length > 0) {
-      connection.query('SELECT * from klienci', async function(error2, results2) {
-        if(results2.length > 0) {
-          const a3 = results.map(t1 => ({...t1, ...results2.find(t2 => t2.id_klienta === t1.id_klienta)}))
-          res.send(JSON.stringify(a3))
-        } else {
-          return null;
-        }
-      })
-    } else {
-      return null;
-    }
+// ALL ORDERS SECTION *
+app.get("/orders", async (req, res) => {
+  const queryAllOrders = await getAllDataFromTarget("orders");
+  const queryAllClients = await getAllDataFromTarget("clients");
+  const mergedQueries = queryAllOrders.map(order => ({
+    ...order,
+    ...queryAllClients.find(client => client.client_id === order.client_id)
+  }));
+  res.send(mergedQueries)
+});
+// END OF ALL ORDERS SECTION *
+
+// ORDER BY ID SECTION *
+app.get("/order_by_id", async (req, res) => {
+  const orderId = req.query.id;
+  const queryOrderById = await getOrdersById(orderId);
+  const queryProductsByOrderID = await getProductsBySingleOrderId(orderId);
+  const queryClientById = await getClientById(queryOrderById.client_id);
+
+  Promise.all([queryOrderById, queryProductsByOrderID, queryClientById]).then((results) => {
+    res.send(results)
   })
 });
+// END OF ORDER BY ID SECTION *
 
-app.get("/order_by_id", (req,res) => {
-  let type = req.query.type;
-  let orderId = req.query.id;
-  connection.query('SELECT * from zamowienia where id = ?', [orderId], async function(error, results) {
-    if(results.length > 0) {
-      try {
-        connection.query('SELECT * from produkty where id_zamowienia = ?', [orderId], async function(error2, results2) {
-          if(results2.length > 0) {
-            try {
-              connection.query('SELECT * from klienci where id_klienta = ?', [results[0].id_klienta], async function(error3, results3) {
-                if (results3) {
-                  let finalQuery = {zamowienie: results[0], produkty: results2, klient: results3[0]}
-                  res.send(finalQuery)
-                }
-              })
-
-            } catch(error) {
-              res.send(null);
-            }
-          } else {
-            return null;
-          }
-        })
-      } catch(error) {
-        res.send(null)
-      }
-    } else {
-      return null;
-    }
-  })
-});
-
-app.post("/updateorder", (req,res) => {
-  let orderId = req.body.zamowienieId;
-  let clientData = req.body.clientDetails.klient;
-  let orderData = req.body.clientDetails.zamowienie;
-  let productsData = req.body.clientDetails.produkty;
+// UPDATING ORDER SECTION *
+app.post("/updateorder", async (req, res) => {
+  let orderId = req.body.orderId;
+  let clientData = req.body.clientDetails.client;
+  let orderData = req.body.clientDetails.order;
+  let productsData = req.body.clientDetails.products;
   let deletedIds = req.body.deletedItems.ids;
-  let fullCost = productsData.reduce((a,b) => a + (b.cenaSzt * b.ilosc || 0), 0);
+  let totalCostOfProducts = productsData.reduce((accumulator, product) => accumulator + (product.itemPrice * product.amount || 0), 0);
   let currentDate = new Date();
 
-  connection.query("UPDATE klienci SET klient = ?, szczegolyKlienta = ?, telefon = ?, kraj = ?, ulica = ?, miasto = ?, kodpocztowy = ? where id_klienta = ?", [clientData.klient, clientData.szczegolyKlienta, clientData.telefon, clientData.kraj, clientData.ulica, clientData.miasto, clientData.kodpocztowy, orderData.id_klienta], function(error, result) {
-    if (error) throw error;
-    connection.query("UPDATE zamowienia SET cena = ?, status = ? where id = ?", [fullCost, orderData.status, orderId], function(error5, result5) {
-      if (error5) throw error5;
-    })
+  const queryUpdateClientById = await updateClientById(clientData, orderData.client_id);
+  const queryUpdateOrderById = await updateOrderById(totalCostOfProducts, orderData.status, orderId);
+  const queryAddMultipleProducts = await addMultipleProducts(orderId, productsData);
 
-    productsData.forEach((e) => {
-      connection.query("SELECT * from produkty where id = ?", [e.id], function(error2, result2) {
-        if (error2) throw error2;
-        if (!result2.length) {
-          connection.query("INSERT into produkty VALUES('', ?, ?, ?, ?, ?)", [orderId, e.nazwaProduktu, e.ilosc, e.cenaSzt, (e.ilosc * e.cenaSzt)], function(error3, result3) {
-            if (error3) throw error3;
-          })
-        }
-      })
-    });
-
-    if(deletedIds !== 0) {
-      deletedIds.sort((a, b) => a - b)
-      connection.query("DELETE from produkty WHERE id IN (?)", [deletedIds], function(error4, result4) {
-        if (error4) throw error4;
-      })
-    }
-    res.send("success");
-  })
-})
-
-app.post("/neworder", (req,res) => {
-  let data = req.body.clientDetails;
-  let isNewClient = req.body.isNewClient;
-  let oldClientId = req.body.oldClientId;
-  let fullCost = data.produkty.reduce((a,b) => a + (b.cenaSzt * b.ilosc || 0), 0);
-  let currentDate = new Date();
-
-  if(isNewClient) {
-    connection.query("INSERT into klienci VALUES ('', ?, ?, ?, ?, ?, ?, ?)", [data.nazwaKlienta, data.szczegolyKlienta, data.telefon, data.kraj, data.ulica, data.miasto, data.kodpocztowy], function(error, results) {
-      let klientId = results.insertId;
-
-      connection.query("INSERT into zamowienia VALUES ('', ?, ?, ?, ?, ?)", [klientId, currentDate, fullCost, data.status, data.nazwaPracownika], function(error2, results2) {
-        if(error2) throw error2;
-        let zamowienieId = results2.insertId;
-
-        (data.produkty).forEach((e) => {
-          connection.query("INSERT into produkty VALUES ('', ?, ?, ?, ?, ?)", [zamowienieId, e.nazwaProduktu, e.ilosc, e.cenaSzt, (e.ilosc * e.cenaSzt)], function(err, result) {
-          });
-        })
-        res.send("success");
-      })
-    })
-  }
-  if(!isNewClient) {
-    connection.query("INSERT into zamowienia VALUES ('', ?, ?, ?, ?, ?)", [oldClientId, currentDate, fullCost, data.status, data.nazwaPracownika], function(error2, results2) {
-      if(error2) throw error2;
-      let zamowienieId = results2.insertId;
-
-      (data.produkty).forEach((e) => {
-        connection.query("INSERT into produkty VALUES ('', ?, ?, ?, ?, ?)", [zamowienieId, e.nazwaProduktu, e.ilosc, e.cenaSzt, (e.ilosc * e.cenaSzt)], function(err, result) {
-        });
-      })
+  // if user is deleteing some products from order
+  if(deletedIds.length > 0) {
+    const queryDeleteProductsById = await deleteProductsById(deletedIds);
+    Promise.all([queryUpdateClientById, queryUpdateOrderById, queryAddMultipleProducts, queryDeleteProductsById]).then(() => {
       res.send("success");
-    })
+    });
+  } else {
+    Promise.all([queryUpdateClientById, queryUpdateOrderById, queryAddMultipleProducts]).then(() => {
+      res.send("success");
+    });
   }
-});
+})
+// END OF UPDATING ORDER SECTION *
 
-app.get("/clients", (req,res) => {
-  connection.query("SELECT * from klienci as klienci; select count(z.id) as iloscZamowien, k.id_klienta from produkty p join zamowienia z join klienci k where p.id_zamowienia = z.id and k.id_klienta = z.id_klienta group by k.id_klienta", function(error, result) {
-    if(error) throw error;
-    if(result.length > 0) {
-      res.send(result)
-    }
+
+// ALL CLIENTS SECTION *
+app.get("/clients", async (req, res) => {
+  const queryAllClientsWithOrdersCount = await getAllClientsWithOrdersCount();
+  Promise.resolve(queryAllClientsWithOrdersCount).then((results) => {
+    res.send(results);
   })
 })
+// END OF ALL CLIENTS SECTION *
 
-app.post("/newclient", (req,res) => {
-  let data = req.body.clientDetails;
-  let currentDate = new Date();
-  connection.query("INSERT into klienci VALUES ('', ?, ?, ?, ?, ?, ?, ?, ?)", [data.nazwaKlienta, data.szczegolyKlienta, data.telefon, data.kraj, data.ulica, data.miasto, data.kodpocztowy, currentDate], function(error, results) {
-    if (error) throw error;
-    let klientId = results.insertId;
-    res.send("success")
-  })
-})
-
-app.get("/client_by_id", (req,res) => {
-  let clientId = req.query.id;
-  connection.query("SELECT * from klienci where id_klienta = ?", [clientId], async function(error, results) {
-    if(results.length > 0) {
-      try {
-        connection.query("SELECT * from zamowienia where id_klienta = ?", [clientId], async function(error2, results2) {
-          if(results2.length > 0) {
-            try {
-              connection.query("SELECT * from produkty where id_zamowienia = ?", [results2[0].id], async function(error3, results3) {
-                if(results3.length > 0) {
-                  let finalQuery = {klient: results[0], zamowienia: results2, produkty: results3}
-                  res.send(finalQuery);
-                } else {
-                  let finalQuery = {klient: results[0], zamowienia: results2, produkty: null}
-                  res.send(finalQuery);
-                }
-              })
-            } catch(error2) {
-              res.send(null);
-            }
-          } else {
-            let finalQuery = {klient: results[0], zamowienia: null, produkty: null}
-            res.send(finalQuery);
-          }
-        })
-      } catch(error) {
-        res.send(null);
-      }
-    }
-  })
-});
-
-app.get("/dashboard_data", (req,res) => {
-  connection.query("SELECT * from klienci as klienci; SELECT * from zamowienia as zamowienia", function(error, results) {
-    if (error) throw error;
-    if(results.length > 0) {
-      res.send(results)
-    }
-  })
-})
-
-app.post("/newevent", (req,res) => {
-  let data = req.body.eventData;
-  connection.query("INSERT into kalendarz values ('', ?, ?, ?, ?, ?, ?)", [data.title, data.details, data.deadlineDate, data.hours, data.addDate, data.worker], function(error, results) {
-    if(error) throw error;
+// ADD NEW CLIENT SECTION *
+app.post("/newclient", async (req, res) => {
+  const clientDetails = req.body.clientDetails;
+  const queryAddingNewClient = await addNewClient(clientDetails);
+  Promise.resolve(queryAddingNewClient).then(() => {
     res.send("success");
   })
 })
+// END OF ADDING NEW CLIENT SECTION *
 
-app.get("/events", (req,res) => {
-  connection.query("SELECT * from kalendarz", function(error, results) {
-    if(error) throw error;
-    if(results.length > 0) {
-      res.send(results)
-    }
+// CLIENT BY ID SECTION *
+app.get("/client_by_id", async (req, res) => {
+  const clientId = req.query.id;
+
+  const queryClientById = await getClientById(clientId);
+  const queryOrdersByClientId = await getOrdersByClientId(clientId);
+  const queryProductsByOrderId = await getProductsByMultipleOrderId(queryOrdersByClientId);
+
+  Promise.all([queryClientById, queryOrdersByClientId, queryProductsByOrderId]).then((results) => {
+    res.send(results);
+  });
+});
+// END OF CLIENT BY ID SECTION *
+
+// DASHBOARD DATA SECTION *
+app.get("/dashboard_data", async (req,res) => {
+  const queryDashboardData = await getDasboardData();
+  Promise.resolve(queryDashboardData).then((results) => {
+    res.send(results);
   })
 })
+// END OF DASHBOARD DATA SECTION *
+
+// ADD NEW EVENT SECTION *
+app.post("/newevent", async (req, res) => {
+  const eventData = req.body.eventData;
+  const queryAddNewEvent = await addNewEvent(eventData);
+  Promise.resolve(queryAddNewEvent).then(() => {
+    res.send("success");
+  })
+})
+// END OF NEW EVENT SECTION *
+
+// GET ALL EVENTS *
+app.get("/events", async (req, res) => {
+  const queryAllEvents = await getAllDataFromTarget("calendar");
+  Promise.resolve(queryAllEvents).then((results) => {
+    res.send(results);
+  })
+})
+// END OF ALL EVENTS *
+
+// GET USERS FOR ADMIN PANEL SECTION *
+app.get("/getusers", async (req, res) => {
+  const queryGetUsersForAdminPanel = await getUsersForAdminPanel();
+  Promise.resolve(queryGetUsersForAdminPanel).then((results) => {
+    res.send(results);
+  })
+})
+// END OF GET USERS FOR ADMIN PANEL SECTION *
+
+// DELETE USER BY ID SECTION *
+app.post("/deleteuser", async (req, res) => {
+  let userId = req.body.userId;
+  const queryDeleteUser = await deleteUserById(userId);
+  Promise.resolve(queryDeleteUser).then(() => {
+    res.send("success");
+  })
+});
+// DELETE USER BY ID SECTION *
+
+// CREATE NEW USER SECTION *
+app.post("/newuser", async (req, res) => {
+  const userDetails = req.body.userDetails;
+  const hashedPassword = await bcrypt.hash(userDetails.password, 10);
+  const queryCreateNewUser = await createNewUser(userDetails, hashedPassword);
+  Promise.resolve(queryCreateNewUser).then(() => {
+    res.send("success");
+  })
+})
+// END OF CREATE NEW USER SECTION *
 
 const port = 5000;
 app.listen(port, () => `Server running on port ${port}`);

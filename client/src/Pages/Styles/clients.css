@@ -8,10 +8,12 @@
   justify-content: space-between;
   align-items: center;
 }
+
 .resultsSpan {
   color: #979CA1;
   font-weight: 300;
 }
+
 .resultsBold {
   color: #151E29;
   font-weight: bold;

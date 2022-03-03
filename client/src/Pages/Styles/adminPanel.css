@@ -1,0 +1,43 @@
+.adminPanelWrap {
+  height: 95%;
+  width: 95%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.adminPanelHeader {
+    height: 10%;
+    width: 100%;
+}
+.adminNav {
+  width: 100%;
+}
+.adminNavList {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  background-color: #F4F6F8;
+  border: 2px solid #E2E0E3;
+  border-radius: 10px;
+  padding: 15px 5px;
+}
+.adminNavItem {
+  list-style-type: none;
+  margin: 0 15px;
+  padding: 5px 10px;
+  font-size: 16px;
+  transition: color .15s ease-in-out, background-color .15s ease-in-out;
+  cursor: pointer;
+  border-radius: 10px;
+}
+.adminNavItem:hover {
+  color: #EF5F63;
+}
+.adminNavItem.active-setting {
+  color: #fff;
+  background-color: #EF5F63;
+
+}

@@ -1,29 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {useParams, Link} from 'react-router-dom';
 import axios from 'axios';
 import './Styles/clientPage.css';
 import Popup from '../Components/Popup';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import ReadMoreRoundedIcon from '@mui/icons-material/ReadMoreRounded';
 
-
 function ClientPage() {
-  const { clientId } = useParams();
+  const {clientId} = useParams();
   const [clientData, setClientData] = useState({});
   const [buttonPopup, setButtonPopup] = useState(false);
   const [clientUpdated, setClientUpdated] = useState(false);
 
-
   const [clientDetails, setClientDetails] = useState({});
 
-
   useEffect(() => {
-    axios.get(`http://localhost:5000/client_by_id?id=${clientId}`, {
-      withCredentials: true
-    }).then(res => {
-      if(res.data != null) {
+    axios.get(`http://localhost:5000/client_by_id?id=${clientId}`, {withCredentials: true}).then(res => {
+      if (res.data != null) {
         setClientUpdated(false);
-        setClientData(res.data)
+        setClientData({
+          client: res.data[0],
+          orders: res.data[1],
+          products: res.data[2]
+        })
       }
     })
   }, [clientUpdated]);
@@ -31,144 +30,176 @@ function ClientPage() {
   const saveOrderChanges = () => {
     axios.post("http://localhost:5000/updateclient", {
       clientDetails
-    }, {
-      withCredentials: true
-    }).then(res => {
-      if(res.data === 'success') {
+    }, {withCredentials: true}).then(res => {
+      if (res.data === 'success') {
         setClientUpdated(true);
       }
     })
   }
 
   const ClientInfo = () => {
-    return (
-      <div>
+    return (<div>
       <div className="clientPageHeader">
-        <h1>Klient <font className="maincolor"> #{clientId}</font></h1>
-        <h3>{(clientData.klient) ? clientData.klient.klient : ""}</h3>
+        <h1>Client
+          <font className="maincolor">
+            #{clientId}</font>
+        </h1>
+        <h3>{
+            (clientData.client)
+              ? clientData.client.client
+              : ""
+          }</h3>
       </div>
       <div className="clientInfo">
 
         <div className="clientContactInfo">
-          <span>Informacje kontaktowe</span>
+          <span>Contant info</span>
           <div className="clientInfoGroup">
             <div className="clientInfoLabel">
-              Adres Email
+              Email address
+            </div>
+            <div className="clientInfoText"></div>
+          </div>
+          <div className="clientInfoGroup">
+            <div className="clientInfoLabel">
+              Phone number
             </div>
             <div className="clientInfoText">
-
+              {
+                (clientData.client)
+                  ? clientData.client.phone
+                  : ""
+              }
             </div>
           </div>
           <div className="clientInfoGroup">
             <div className="clientInfoLabel">
-              Numer telefonu
+              Client details
             </div>
             <div className="clientInfoText">
-              {(clientData.klient) ? clientData.klient.telefon : ""}
-            </div>
-          </div>
-          <div className="clientInfoGroup">
-            <div className="clientInfoLabel">
-              Szczegóły klienta
-            </div>
-            <div className="clientInfoText">
-              {(clientData.klient) ? clientData.klient.szczegolyKlienta : ""}
+              {
+                (clientData.client)
+                  ? clientData.client.clientDetails
+                  : ""
+              }
             </div>
           </div>
         </div>
 
         <div className="clientContactInfo">
-          <span>Informacje wysyłkowe</span>
+          <span>Shipping info</span>
           <div className="clientInfoGroup">
             <div className="clientInfoLabel">
-              Kraj
+              Country
             </div>
             <div className="clientInfoText">
-              {(clientData.klient) ? clientData.klient.kraj : ""}
+              {
+                (clientData.client)
+                  ? clientData.client.country
+                  : ""
+              }
             </div>
           </div>
           <div className="clientInfoGroup">
             <div className="clientInfoLabel">
-              Miasto
+              City
             </div>
             <div className="clientInfoText">
-              {(clientData.klient) ? clientData.klient.miasto : ""}
+              {
+                (clientData.client)
+                  ? clientData.client.city
+                  : ""
+              }
             </div>
           </div>
           <div className="clientInfoGroup">
             <div className="clientInfoLabel">
-              Kod Pocztowy
+              Postal code
             </div>
             <div className="clientInfoText">
-              {(clientData.klient) ? clientData.klient.kodpocztowy : ""}
+              {
+                (clientData.client)
+                  ? clientData.client.postalCode
+                  : ""
+              }
             </div>
           </div>
           <div className="clientInfoGroup">
             <div className="clientInfoLabel">
-              Ulica
+              Street
             </div>
             <div className="clientInfoText">
-              {(clientData.klient) ? clientData.klient.ulica : ""}
+              {
+                (clientData.client)
+                  ? clientData.client.street
+                  : ""
+              }
             </div>
           </div>
         </div>
       </div>
-      </div>
-    )
+    </div>)
   }
 
   const ClientOrders = () => {
 
-    return (
-      <div className="clientOrdersWrap">
+    return (<div className="clientOrdersWrap">
       <table>
         <thead>
           <tr>
-            <th>Numer zamówienia</th>
-            <th>Data</th>
+            <th>Order id</th>
+            <th>Date</th>
             <th>Status</th>
-            <th>Cena</th>
+            <th>Price</th>
             <th></th>
           </tr>
         </thead>
         <tbody>
-          {clientData.zamowienia?.map(order => {
-            return (
-            <tr key={order.id}>
-              <td><font className="maincolor">#</font>{order.id}</td>
-              <td>{(order.data).split('T')[0]}</td>
-              <td className={order.status}>{order.status}</td>
-              <td>{order.cena} zł</td>
-              <td className="maincolor">
-                <Link to={`/zamowienia/${order.id}`}>
-                <ReadMoreRoundedIcon />
-                </Link>
-              </td>
-            </tr>
-          )
-        }).reverse()}
+          {
+            clientData.orders
+              ?.map(order => {
+                return (<tr key={order.id}>
+                  <td>
+                    <font className="maincolor">#</font>{order.id}</td>
+                  <td>{(order.date).split('T')[0]}</td>
+                  <td className={order.status}>{order.status}</td>
+                  <td>{order.price}
+                    zł</td>
+                  <td className="maincolor">
+                    <Link to={`/orders/${order.id}`}>
+                      <ReadMoreRoundedIcon/>
+                    </Link>
+                  </td>
+                </tr>)
+              }).reverse()
+          }
         </tbody>
       </table>
-      </div>
-    )
+    </div>)
   }
-  return (
-    <div className="bodyWrap">
-      <div className="clientPageContentWrap">
+  return (<div className="bodyWrap">
+    <div className="clientPageContentWrap">
 
-        <div className="clientLeftWrap">
-          <ClientInfo />
-        </div>
-
-        <div className="clientRightWrap">
-          <div>
-            <p>Łączna suma zamówień klienta: <font className="maincolor">{clientData.zamowienia ? clientData.zamowienia.reduce((a,b) => a + (b.cena || 0), 0) : "0"} zł </font></p>
-          </div>
-          <ClientOrders />
-        </div>
-
+      <div className="clientLeftWrap">
+        <ClientInfo/>
       </div>
+
+      <div className="clientRightWrap">
+        <div>
+          <p>Client orders sum:
+            <font className="maincolor">{
+                clientData.orders
+                  ? clientData.orders.reduce((a, b) => a + (b.price || 0), 0)
+                  : "0"
+              }
+              zł
+            </font>
+          </p>
+        </div>
+        <ClientOrders/>
+      </div>
+
     </div>
-  )
+  </div>)
 }
 export default ClientPage;

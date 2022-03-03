@@ -12,26 +12,27 @@
   align-items: center;
   justify-content: center;
   background-color: #f7f8f9;
-		border-radius: 30px;
-		-webkit-box-shadow: 0px 0px 33px 0px rgba(219,221,255,0.46);
-    	-moz-box-shadow: 0px 0px 33px 0px rgba(219,221,255,0.46);
-    	box-shadow: 0px 0px 33px 0px rgba(219, 225, 255, 0.46);
+  border-radius: 30px;
+  -webkit-box-shadow: 0px 0px 33px 0px rgba(219, 221, 255, 0.46);
+  -moz-box-shadow: 0px 0px 33px 0px rgba(219, 221, 255, 0.46);
+  box-shadow: 0px 0px 33px 0px rgba(219, 225, 255, 0.46);
 }
 
 .loginWrap {
-    margin-top: 50px;
-    padding: 20px;
-}
-/* left side */
-.loginSide{
-    background-color: #fafafa;
-    height: 100%;
-    width: 55%;
-    border-radius: 10px 0 0 10px;
-    text-align: center;
+  margin-top: 50px;
+  padding: 20px;
 }
 
-.loginSide h1{
+/* left side */
+.loginSide {
+  background-color: #fafafa;
+  height: 100%;
+  width: 55%;
+  border-radius: 10px 0 0 10px;
+  text-align: center;
+}
+
+.loginSide h1 {
   text-align: center;
   margin: 0 0 50px 0;
   font-weight: 400;
@@ -39,56 +40,57 @@
   color: #2e2e2e;
 }
 
-.input-group{
+.input-group {
   margin-bottom: 35px;
   position: relative;
 }
 
-.input{
-		display: block;
-	    width: 100%;
-	    height: 30px;
-	    border: 0;
-	    border-bottom: 2px solid #ddd;
-	    padding: 1.6em;
-	    box-sizing: border-box;
-	    background: none;
-	    outline: none;
-	    color: #78909c;
-	    transition: all 0.2s ease-in;
-	}
-	.input:focus{
-		border-bottom: 2px solid #161517;
-	}
-
-  label{
-	 	position: absolute;
-	 	top: 35%;
-	 	left: 39px;
-	 	color: #B0BEC5;
-	 	pointer-events: none;
-	 	font-size: meduim;
-	 	transition: all 0.3s ease;
-	}
-
-	.input-group input:focus + label,
-	.input-group input.has-value + label{
-		top: -10px;
-		font-size: xx-small;
-	}
-
-.loginSide span{
-    float: left
+.input {
+  display: block;
+  width: 100%;
+  height: 30px;
+  border: 0;
+  border-bottom: 2px solid #ddd;
+  padding: 1.6em;
+  box-sizing: border-box;
+  background: none;
+  outline: none;
+  color: #78909c;
+  transition: all 0.2s ease-in;
 }
 
-.loginSide a{
-    float: right;
-    text-decoration: none;
-    color: #000;
-    transition: 0.3s all ease-in-out;
+.input:focus {
+  border-bottom: 2px solid #161517;
 }
 
-.loginSide button{
+label {
+  position: absolute;
+  top: 35%;
+  left: 39px;
+  color: #B0BEC5;
+  pointer-events: none;
+  font-size: meduim;
+  transition: all 0.3s ease;
+}
+
+.input-group input:focus+label,
+.input-group input.has-value+label {
+  top: -10px;
+  font-size: xx-small;
+}
+
+.loginSide span {
+  float: left
+}
+
+.loginSide a {
+  float: right;
+  text-decoration: none;
+  color: #000;
+  transition: 0.3s all ease-in-out;
+}
+
+.loginSide button {
   font-size: 16px;
   display: block;
   border: none;
@@ -107,43 +109,47 @@
   box-shadow: 0 5px 12px 3px rgba(239, 95, 99, 0.5);
 }
 
-.loginSide p{
-    display: inline-block;
-    margin: 0px 10px 30px;
-}
-/* right side */
-.infoSide{
-    background: -webkit-linear-gradient(bottom left, #EF5F63, #CA3D47, #820014, #5F0000);
-    background: -o-linear-gradient(bottom left, #EF5F63, #CA3D47, #820014, #5F0000);
-    background: linear-gradient(to top right, #EF5F63, #CA3D47, #820014, #5F0000);
-    background-size: 400% 400%;
-    animation: gradient 12s ease infinite;
-    color:#fff;
-    border-radius:  50px;
-    text-align: center;
-    height: 100%;
-    width: 45%;
-    border-radius: 10px 0 0 10px;
-    text-align: center;
-}
-.infoSide h2{
-    margin: 30px 0;
-    font-size: 50px;
-    font-weight: 500;
-}
-.infoSide p{
-    font-size: 18px;
-    margin-bottom: 30px;
+.loginSide p {
+  display: inline-block;
+  margin: 0px 10px 30px;
 }
 
+/* right side */
+.infoSide {
+  background: -webkit-linear-gradient(bottom left, #EF5F63, #CA3D47, #820014, #5F0000);
+  background: -o-linear-gradient(bottom left, #EF5F63, #CA3D47, #820014, #5F0000);
+  background: linear-gradient(to top right, #EF5F63, #CA3D47, #820014, #5F0000);
+  background-size: 400% 400%;
+  animation: gradient 12s ease infinite;
+  color: #fff;
+  border-radius: 50px;
+  text-align: center;
+  height: 100%;
+  width: 45%;
+  border-radius: 10px 0 0 10px;
+  text-align: center;
+}
+
+.infoSide h2 {
+  margin: 30px 0;
+  font-size: 50px;
+  font-weight: 500;
+}
+
+.infoSide p {
+  font-size: 18px;
+  margin-bottom: 30px;
+}
 
 @keyframes gradient {
   0% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
+
   100% {
     background-position: 0% 50%;
   }

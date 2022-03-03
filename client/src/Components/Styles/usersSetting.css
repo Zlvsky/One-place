@@ -1,0 +1,131 @@
+.usersSettingWrap {
+  display: flex;
+  flex-direction: column;
+}
+.usersColumn {
+  display: flex;
+  flex-direction: row;
+}
+.usersInfo {
+  width: 30%;
+  padding: 20px 10px;
+  margin: 0 10px;
+}
+.adminUsersTable, .normalUsersTable {
+  max-height: 275px;
+  overflow-y: auto;
+  position: relative;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.adminUsersTable::-webkit-scrollbar-track, .normalUsersTable::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  background-color: #F5F5F5;
+}
+
+.adminUsersTable::-webkit-scrollbar, .normalUsersTable::-webkit-scrollbar {
+  width: 10px;
+  background-color: transparent;
+  transition: background-color ease-in-out .2s;
+}
+
+.adminUsersTable::-webkit-scrollbar-thumb, .normalUsersTable::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+  background-color: #E2E0E3;
+}
+
+.adminUsersTable::-webkit-scrollbar-thumb:hover, .normalUsersTable::-webkit-scrollbar-thumb:hover {
+  background-color: #C8C8C8;
+}
+.usersInfoText {
+  color: #999999;
+}
+.usersTable {
+  width: 100%;
+  padding: 20px 10px;
+  margin: 0 10px;
+  border-collapse: separate;
+  border-spacing: 0 0;
+  overflow: hidden;
+}
+/*  */
+.darkerTableBg {
+  background-color: #e7eaf1;
+}
+
+.usersTable thead th {
+  border-top: 2px solid #E2E0E3;
+  background-color: #e7eaf1;
+  padding: 10px 5px;
+  text-align: center;
+}
+.usersTable thead th:first-child {
+  border-left: 2px solid #E2E0E3;
+  border-top-left-radius: 10px;
+}
+.usersTable thead th:last-child {
+  border-right: 2px solid #E2E0E3;
+  border-top-right-radius: 10px;
+}
+/*  */
+.usersTable tbody td {
+  padding: 10px 5px;
+  text-align: center;
+}
+.usersTable tbody td:first-child {
+  border-left: 2px solid #E2E0E3;
+}
+.usersTable tbody td:last-child {
+  border-right: 2px solid #E2E0E3;
+}
+.usersTable tbody tr:last-child td {
+  border-bottom: 2px solid #E2E0E3;
+
+}
+.usersTable tbody tr:last-child td:first-child {
+  border-bottom-left-radius: 10px;
+}
+.usersTable tbody tr:last-child td:last-child {
+  border-bottom-right-radius: 10px;
+}
+/*  */
+
+.handleDeleteWrap {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.handleDeleteButton {
+  padding: 10px 45px;
+  border: 2px solid #EF5F63;
+  font-weight: 500;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-radius: 25px;
+  font-size: 16px;
+}
+.handleDeleteButton:hover {
+  color: #fff;
+  background: #EF5F63;
+}
+/*  */
+
+.addNewUserWrap {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+.addNewUserText {
+  font-weight: 600;
+  margin-right: 20px;
+  font-size: 20px;
+}
