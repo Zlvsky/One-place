@@ -94,7 +94,11 @@
     DATABASE=''
    ```
 4. Configure your MySQL Database
-
+5. 
+6. Run app with package "concurrently" (node.js and react app at the same time)
+   ```sh
+   npm run dev | npm run build
+   ```
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
@@ -102,9 +106,9 @@
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
-[home-screenshot]: readmeimages/home.png
-[login-screenshot]: readmeimages/login.png
-[orders-screenshot]: readmeimages/orders.png
-[createorder-screenshot]: readmeimages/createorder.png
-[events-screenshot]: readmeimages/events.png
-[users-screenshot]: readmeimages/users.png
+[home-screenshot]: readmeimages/home.PNG
+[login-screenshot]: readmeimages/login.PNG
+[orders-screenshot]: readmeimages/orders.PNG
+[createorder-screenshot]: readmeimages/createorder.PNG
+[events-screenshot]: readmeimages/events.PNG
+[users-screenshot]: readmeimages/users.PNG
