@@ -1,3 +1,4 @@
+const { query } = require('express');
 var mysql = require('mysql');
 var connection = mysql.createPool({
   host: process.env.DB_HOST,
@@ -46,6 +47,20 @@ function getOrdersById(orderId) {
       }
     })
   })
+}
+
+function addNewOrder(orderDetails, clientId, totalCost, date) {
+  const queryString = "INSERT into orders VALUES ('', ?, ?, ?, ?, ?)";
+  const passedValues = [clientId, date, totalCost, orderDetails.status, orderDetails.worker];
+  return new Promise((resolve, reject) => {
+    connection.query(queryString, passedValues, function(error, results) {
+      if(error) {
+        console.log(error);
+      }
+      resolve(results.insertId);
+    })
+  })
+
 }
 
 function getClientById(clientId) {
@@ -183,11 +198,11 @@ function addNewClient(clientDetails) {
   const currentDate = new Date();
   const passedValues = [clientDetails.clientName, clientDetails.clientDetails, clientDetails.phone, clientDetails.country, clientDetails.street, clientDetails.city, clientDetails.postalCode, currentDate]
   return new Promise((resolve, reject) => {
-    connection.query(queryString, passedValues, function(error) {
+    connection.query(queryString, passedValues, function(error, results) {
       if(error) {
         console.log(error);
       }
-      resolve("success");
+      resolve(results.insertId);
     })
   })
 }
@@ -277,6 +292,7 @@ module.exports = {
   updateClientById,
   getAllClientsWithOrdersCount,
   addNewClient,
+  addNewOrder,
   getDasboardData,
   addNewEvent,
   deleteUserById,

@@ -26,6 +26,7 @@ const {
   addNewClient,
   getDasboardData,
   addNewEvent,
+  addNewOrder,
   deleteUserById,
   getUsersForAdminPanel,
   createNewUser
@@ -103,6 +104,40 @@ app.get("/order_by_id", async (req, res) => {
 });
 // END OF ORDER BY ID SECTION *
 
+// CREATE NEW ORDER * 
+app.post("/neworder", async (req, res) => {
+  let newOrderData = req.body.clientDetails;
+  // if new client was selected
+  let isNewClient = req.body.isNewClient;
+  // if existing client was selected
+  let oldClientId = req.body.oldClientId;
+  let dataDetails = newOrderData;
+  let productsData = newOrderData.products;
+  let totalCostOfProducts = productsData.reduce(
+    (accumulator, product) =>
+      accumulator + (product.itemPrice * product.amount || 0),
+    0
+  );
+  let currentDate = new Date();
+
+  // if new client is being created
+  if(isNewClient) {
+    const queryAddNewClient = await addNewClient(dataDetails);
+    const queryAddNewOrder = await addNewOrder(dataDetails, queryAddNewClient, totalCostOfProducts, currentDate);
+    const queryAddMultipleProducts = await addMultipleProducts(queryAddNewOrder, productsData);
+    Promise.all([queryAddNewClient, queryAddNewOrder, queryAddMultipleProducts]).then(() => {
+      res.send("success");
+    })
+  } else {
+    const queryAddNewOrder = await addNewOrder(dataDetails, oldClientId, totalCostOfProducts, currentDate);
+    const queryAddMultipleProducts = await addMultipleProducts(queryAddNewOrder, productsData);
+    Promise.all([queryAddNewOrder, queryAddMultipleProducts]).then(() => {
+      res.send("success");
+    })
+  }
+})
+// END OF CREATING NEW ORDER *
+
 // UPDATING ORDER SECTION *
 app.post("/updateorder", async (req, res) => {
   let orderId = req.body.orderId;
@@ -110,7 +145,11 @@ app.post("/updateorder", async (req, res) => {
   let orderData = req.body.clientDetails.order;
   let productsData = req.body.clientDetails.products;
   let deletedIds = req.body.deletedItems.ids;
-  let totalCostOfProducts = productsData.reduce((accumulator, product) => accumulator + (product.itemPrice * product.amount || 0), 0);
+  let totalCostOfProducts = productsData.reduce(
+    (accumulator, product) =>
+      accumulator + (product.itemPrice * product.amount || 0),
+    0
+  );
   let currentDate = new Date();
 
   const queryUpdateClientById = await updateClientById(clientData, orderData.client_id);

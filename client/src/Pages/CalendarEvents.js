@@ -2,7 +2,6 @@ import React, { useEffect, useState, useContext } from "react";
 import "./Styles/calendar.css";
 import axios from "axios";
 import DatePicker from "react-date-picker";
-import Popup from "../Components/Popup";
 import { AuthLoginInfo } from "./../AuthComponents/AuthLogin";
 import InsertInvitationRoundedIcon from "@mui/icons-material/InsertInvitationRounded";
 import TitleRoundedIcon from "@mui/icons-material/TitleRounded";
@@ -42,7 +41,7 @@ function formatDate(date, checkNextDay = false) {
   if (month.length < 2) month = "0" + month;
   if (day.length < 2) day = "0" + day;
   var convertedDate = [year, month, day].join("-");
-  if (checkNextDay == true) {
+  if (checkNextDay === true) {
     if (checkIfNextDay(convertedDate)) {
       return (
         <span
@@ -60,7 +59,7 @@ function formatDate(date, checkNextDay = false) {
 
 function formatIsoDate(date, checkNextDay = false) {
   const convertedDate = date.split("T")[0];
-  if (checkNextDay == true) {
+  if (checkNextDay === true) {
     if (checkIfNextDayIso(convertedDate)) {
       return (
         <span
@@ -114,15 +113,12 @@ function CalendarEvents() {
         <div className="calendarHeader">
           <h1>Event calendar</h1>
         </div>
-        <div className="calendarColumns">
-          {props.children}
-        </div>
+        <div className="calendarColumns">{props.children}</div>
       </div>
     );
   };
 
   const NewEvent = () => {
-    const [buttonPopup, setButtonPopup] = useState(false);
     const [newEventData, setNewEventData] = useState({
       title: "",
       calendarPickDate: new Date(),

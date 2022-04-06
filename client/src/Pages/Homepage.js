@@ -96,7 +96,7 @@ function Homepage() {
       tommorowDate.setDate(tommorowDate.getDate() + 1);
       let tommorowDateToCompare = tommorowDate.toISOString().split("T")[0];
       let eventDate = date.split("T")[0];
-      if (eventDate == todaysDate) {
+      if (eventDate === todaysDate) {
         return "Today";
       } else if (eventDate === tommorowDateToCompare) {
         return "Tommorow";
@@ -107,7 +107,7 @@ function Homepage() {
 
     const UpcomingEvents = () => {
       let upcomingEventsExist = false;
-      if (dashboardData[2] === undefined || dashboardData[2].length == 0) {
+      if (dashboardData[2] === undefined || dashboardData[2].length === 0) {
         upcomingEventsExist = false;
       } else {
         upcomingEventsExist = true;
