@@ -20,36 +20,6 @@
   </p>
 </div>
 
-
-
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
-  </ol>
-</details>
-
-
-
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
@@ -86,15 +56,15 @@
    ```sh
    npm install
    ```
-3. Configure your .env file
+3. Create and configure your .env file
    ```js
     DB_HOST='127.0.0.1'
     DB_USER=''
     DB_PASSWORD=''
     DATABASE=''
    ```
-4. Configure your MySQL Database
-5. 
+4. Import sql database template to server (one-place.sql)
+5. Add first admin account
 6. Run app with package "concurrently" (node.js and react app at the same time)
    ```sh
    npm run dev | npm run build
