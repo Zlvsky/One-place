@@ -164,7 +164,7 @@ function Homepage() {
               <PaymentsRoundedIcon />
             </div>
 
-            <div>
+            <div className="topPanelDataSummary">
               <p>Income</p>
               <h3 className="maincolor topPanelDataText">
                 {getTotalSumOfDateRange()}
@@ -185,7 +185,7 @@ function Homepage() {
               <TrendingUpRoundedIcon />
             </div>
 
-            <div>
+            <div className="topPanelDataSummary">
               <p>New orders</p>
               <h3 className="maincolor topPanelDataText">
                 {getTotalNewOrdersDateRange()}
@@ -207,7 +207,7 @@ function Homepage() {
               <SupervisorAccountRoundedIcon />
             </div>
 
-            <div>
+            <div className="topPanelDataSummary">
               <p>New clients</p>
               <h3 className="maincolor topPanelDataText">
                 {getTotalNewClientsDateRange()}

@@ -34,10 +34,11 @@
 .orderNavWrap {
   width: 100%;
   display: flex;
+  flex-direction: column-reverse;
 }
 
 .orderNav {
-  width: 80%;
+  width: 100%;
 }
 
 .orderNav ul {
@@ -62,7 +63,7 @@
 }
 
 .addOrderWrap {
-  width: 30%;
+  width: 100%;
   text-align: right;
   text-align: -webkit-right;
   text-align: -moz-right;
@@ -475,4 +476,12 @@
 
 .autoCompleteOption:hover {
   background-color: #EFEFEF;
+}
+
+/* responsive */
+@media screen and (max-width: 1024px) {
+  .addOrder {
+    padding: 10px 25px;
+
+  }
 }

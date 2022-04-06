@@ -41,3 +41,26 @@
   background-color: #EF5F63;
 
 }
+
+
+/* responsive */
+
+@media screen and (max-width: 1024px) {
+  .adminPanelWrap {
+    overflow: unset;
+    overflow-x: hidden;
+  }
+  .adminPanelHeader {
+    text-align: center;
+  }
+  .addNewUserWrap {
+    justify-content: center !important;
+  }
+  .usersColumn {
+    flex-direction: column !important;
+  }
+  .usersInfo {
+    width: 100% !important;
+    margin: 0 !important;
+  }
+}

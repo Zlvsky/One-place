@@ -154,3 +154,21 @@ label {
     background-position: 0% 50%;
   }
 }
+
+
+/* responsive */
+@media screen and (max-width: 1024px) {
+  .contentLoginWrap {
+    width: 97%;
+    max-width: 800px;
+  }
+  .loginWrap {
+    padding: 10px;
+  }
+  .loginSide h1 {
+    font-size: 50px;
+  }
+  .infoSide h2 {
+    font-size: 40px;
+  }
+}

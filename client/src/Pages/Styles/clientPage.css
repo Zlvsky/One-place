@@ -130,3 +130,19 @@
   padding: 0.5em;
   border-bottom: none;
 }
+
+
+@media screen and (max-width: 1024px) {
+  .clientPageContentWrap {
+    flex-direction: column;
+    width: 100%;
+  }
+  .clientLeftWrap {
+    width: 100%;
+    margin: 0;
+  }
+  .clientRightWrap {
+    width: 100%;
+    margin: 0;
+  }
+}

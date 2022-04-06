@@ -252,3 +252,22 @@
 .calendarWrap .addOrder {
   justify-content: center;
 }
+
+@media screen and (max-width: 1024px) {
+  .calendarWrap {
+    overflow: unset;
+  }
+  .calendarHeader {
+    text-align: center;
+  }
+  .calendarColumns {
+    flex-direction: column;
+    height: auto;
+  }
+  .newEventWrap {
+    width: 100%;
+  }
+  .eventsTableWrap {
+    width: 100%;
+  }
+}

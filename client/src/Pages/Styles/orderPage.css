@@ -187,3 +187,33 @@
   border-radius: 10px;
   margin-bottom: -10px;
 }
+
+
+@media screen and (max-width: 1024px) {
+  .orderPageRightSide, .orderPageLeftSide {
+    width: 100%;
+    overflow: unset;
+    height: auto;
+  }
+  .editOrderButton {
+    padding: 10px 25px;
+  }
+  .orderPageHeader {
+    text-align: center;
+  }
+  .orderPageSection {
+    display: block;
+  }
+  .userColumn {
+    display: flex;
+    align-items: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .summaryHeader {
+    width: 30%;
+  }
+  .userColumnRow {
+    width: 70%;
+  }
+}

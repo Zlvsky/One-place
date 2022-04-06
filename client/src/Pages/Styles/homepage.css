@@ -120,3 +120,56 @@
 .upcomingEventTitle {
 
 }
+
+/* responsive */
+
+@media screen and (max-width: 1024px) {
+  .topPanelDataRangeBox {
+    width: 100%;
+  }
+  .topPanelDataRangeBox h3{
+    width: 30%;
+  }
+  .topPanelDataRangeBox .topPanelDataIcon {
+    width: auto;
+    margin: 0;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .topPanelData {
+    flex-direction: column;
+  }
+  .topPanelDataBox {
+    width: 100%;
+    align-items: center;
+    flex-direction: row;
+    padding: 5px 20px;
+  }
+  .topPanelDataSummary {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    width: 70%;
+  }
+  .topPanelDataSummary p {
+    margin-right: 20px;
+  }
+  .topPanelDataIcon {
+    width: 10%;
+  }
+  .topPanelSeperator {
+    width: 0;
+  }
+  .topPanelDataBox div:last-child {
+    width: 20%;
+  }
+  .upcomingEventWrap {
+    height: 100%;
+    width: 25%;
+  }
+  .topPanelHeaderInline {
+    width: 30% !important;
+  }
+}

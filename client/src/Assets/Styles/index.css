@@ -60,3 +60,18 @@ a {
 .clickable {
   cursor: pointer;
 }
+
+/* responsive  */
+
+@media screen and (max-width: 1024px) {
+  body, #root {
+    height: auto;
+    width: auto;
+  }
+  .bodyWrap {
+    width: 100%;
+    left: 0;
+    position: relative !important;
+    justify-content: unset !important;
+  }
+}

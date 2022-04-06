@@ -100,3 +100,51 @@
   flex-direction: row;
   align-items: center;
 }
+
+/* hamburger menu */
+.hamburgerMenu {
+  display: none;
+}
+
+/* responsive below */
+
+@media screen and (max-width: 1024px) {
+  .navbar {
+    left: 0;
+    width: 100%;
+  }
+  .hamburgerMenu {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 2rem;
+    height: 2rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 10;
+  }
+
+  .hamburgerMenu div {
+    width: 2rem;
+    height: 0.25rem;
+    background-color: #000000;
+    border-radius: 10px;
+    transition: all 0.3s linear;
+    position: relative;
+    transform-origin: 1px;
+  }
+
+  .Sidebar { 
+    position: absolute;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .SidebarOpen {
+    transform: translateX(0);
+  }
+  .SidebarClosed {
+    transform: translateX(-100%);
+  }
+}
