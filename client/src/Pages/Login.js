@@ -24,13 +24,13 @@ export default function Login() {
           <h1>Log in</h1>
           <div className="input-group">
             <input type="text" className="input" onChange={e => setUsername(e.target.value)} required="required"/>
-            <label>Login</label>
+            <label className={`${username.length > 0 ? "focusLabel" : ""}`}>Login</label>
           </div>
           <div className="input-group">
-            <input type="text" className="input" onChange={e => setPassword(e.target.value)} required="required"/>
-            <label>Password</label>
+            <input type="text" className="input password" onChange={e => setPassword(e.target.value)} required="required"/>
+            <label className={`${password.length > 0 ? "focusLabel" : ""}`}>Password</label>
           </div>
-          <button onClick={login}>Zaloguj</button>
+          <button onClick={login}>Login</button>
         </div>
       </div>
       <div className="infoSide">

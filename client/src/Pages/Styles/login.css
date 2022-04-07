@@ -74,11 +74,13 @@ label {
 }
 
 .input-group input:focus+label,
-.input-group input.has-value+label {
+label.focusLabel {
   top: -10px;
   font-size: xx-small;
 }
-
+.input.password {
+  -webkit-text-security: disc;
+}
 .loginSide span {
   float: left
 }
