@@ -95,11 +95,11 @@
    ```sh
    git clone https://github.com/Zlvsky/One-place.git
    ```
-2. Install NPM packages
+2. Install NPM packages in root folder and /client folder
    ```sh
    npm install
    ```
-3. Create and configure your .env file
+3. Create and configure your .env file in root folder
    ```js
     DB_HOST='127.0.0.1'
     DB_USER=''
