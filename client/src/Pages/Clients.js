@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import "./Styles/clients.css";
 import { AuthLoginInfo } from "./../AuthComponents/AuthLogin";
 import Popup from "../Components/Popup";
+import SearchBar from "../Components/SearchBar";
 import Pagination from "../Components/Pagination";
 import ReadMoreRoundedIcon from "@mui/icons-material/ReadMoreRounded";
 import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
@@ -12,8 +13,14 @@ function Clients() {
   const ctx = useContext(AuthLoginInfo);
   const [newOrderSubmitted, setNewOrderSubmitted] = useState(false);
   const [clientsData, setClientsData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
   const [buttonPopup, setButtonPopup] = useState(false);
   const [filterId, setFilterId] = useState("");
+
+
+   const handleSearchChange = (newFilteredData) => {
+     setFilteredData(newFilteredData);
+   };
 
   useEffect(() => {
     setNewOrderSubmitted(false);
@@ -27,28 +34,27 @@ function Clients() {
               ...res.data[1].find((t2) => t2.client_id === t1.client_id),
             }))
           );
+          setFilteredData(
+            res.data[0].map((t1) => ({
+              ...t1,
+              ...res.data[1].find((t2) => t2.client_id === t1.client_id),
+            }))
+          );
         }
       });
   }, [newOrderSubmitted]);
 
-  console.log(clientsData);
+ 
+  console.log("c", clientsData);
+  console.log("f", filteredData);
+
+  
 
   const ClientsTable = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 30;
-    const clientsFiltered = clientsData
-      ?.filter((val) => {
-        if (
-          [val.client.toLowerCase(), val.client_id + ""].some((r) =>
-            r.includes(filterId)
-          )
-        ) {
-          return val;
-        }
-      })
-      .reverse();
-    const totalClients = clientsFiltered.length;
-    const computedClients = clientsFiltered.slice(
+    const totalClients = filteredData.length;
+    const computedClients = filteredData.slice(
       (currentPage - 1) * itemsPerPage,
       (currentPage - 1) * itemsPerPage + itemsPerPage
     );
@@ -284,11 +290,10 @@ function Clients() {
           <h1>Clients</h1>
           <div className="orderNavWrap">
             <div className="addOrderWrap">
-              <input
-                type="text"
-                placeholder="Search by id"
-                onChange={(e) => setFilterId(e.target.value)}
-                value={filterId}
+              <SearchBar
+                data={clientsData}
+                handleSearchChange={handleSearchChange}
+                dataType="clients"
               />
               <button
                 className="addOrder"

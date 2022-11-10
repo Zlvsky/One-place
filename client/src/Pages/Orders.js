@@ -4,6 +4,7 @@ import axios from "axios";
 import "./Styles/order.css";
 import { AuthLoginInfo } from "./../AuthComponents/AuthLogin";
 import Popup from "../Components/Popup";
+import SearchBar from "../Components/SearchBar";
 import Pagination from "../Components/Pagination";
 import ReadMoreRoundedIcon from "@mui/icons-material/ReadMoreRounded";
 import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
@@ -13,6 +14,7 @@ function Orders() {
   const [newOrderSubmitted, setNewOrderSubmitted] = useState(false);
 
   const [ordersData, setOrdersData] = useState([]);
+   const [filteredData, setFilteredData] = useState([]);
 
   const [buttonPopup, setButtonPopup] = useState(false);
 
@@ -27,6 +29,8 @@ function Orders() {
   const [allClientsData, setAllClientsData] = useState([]);
 
   const ctx = useContext(AuthLoginInfo);
+
+  console.log(ordersData)
 
   const [clientDetails, setClientDetails] = useState({
     clientName: "",
@@ -54,24 +58,19 @@ function Orders() {
       .then((res) => {
         if (res.data != null) {
           setOrdersData(res.data);
+          setFilteredData(res.data);
         }
       });
   }, [newOrderSubmitted]);
 
+  const handleSearchChange = (newFilteredData) => {
+    setFilteredData(newFilteredData);
+  };
+
   const [currentPage, setCurrentPage] = useState(1);
-  const ordersFiltered = ordersData
-    ?.filter((val) => {
-      if (
-        val.status.includes(filterOrders) &&
-        (val.id + "").includes(filterId)
-      ) {
-        return val;
-      }
-    })
-    .reverse();
   const itemsPerPage = 30;
-  const totalOrders = ordersFiltered.length;
-  const computedOrders = ordersFiltered.slice(
+  const totalOrders = filteredData.length;
+  const computedOrders = filteredData.slice(
     (currentPage - 1) * itemsPerPage,
     (currentPage - 1) * itemsPerPage + itemsPerPage
   );
@@ -211,11 +210,11 @@ function Orders() {
               </ul>
             </div>
             <div className="addOrderWrap">
-              <input
-                type="text"
-                placeholder="Search by ID"
-                onChange={(e) => setFilterId(e.target.value)}
-                value={filterId}
+              <SearchBar
+                data={ordersData}
+                handleSearchChange={handleSearchChange}
+                dataType="orders"
+                status={filterOrders}
               />
               <button
                 className="addOrder"
